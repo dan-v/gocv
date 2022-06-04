@@ -69,3 +69,9 @@ int VideoWriter_IsOpened(VideoWriter vw) {
 void VideoWriter_Write(VideoWriter vw, Mat img) {
     *vw << *img;
 }
+
+void VideoWriter_OpenCap(VideoWriter vw, const char* name, int apiPreference, const char* codec, double fps, int width,
+                      int height, bool isColor) {
+    int codecCode = cv::VideoWriter::fourcc(codec[0], codec[1], codec[2], codec[3]);
+    vw->open(name, apiPreference, codecCode, fps, cv::Size(width, height), isColor);
+}
