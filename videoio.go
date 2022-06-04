@@ -441,6 +441,30 @@ func VideoWriterFile(name string, codec string, fps float64, width int, height i
 	return
 }
 
+func VideoWriterCap(name string, apiPreference int, codec string, fps float64, width int, height int, isColor bool) (vw *VideoWriter, err error) {
+	if fps == 0 || width == 0 || height == 0 {
+		return nil, fmt.Errorf("one of the numerical parameters "+
+			"is equal to zero: FPS: %f, width: %d, height: %d", fps, width, height)
+	}
+
+	vw = &VideoWriter{
+		p:  C.VideoWriter_New(),
+		mu: &sync.RWMutex{},
+	}
+
+	cName := C.CString(name)
+	defer C.free(unsafe.Pointer(cName))
+
+	cCodec := C.CString(codec)
+	defer C.free(unsafe.Pointer(cCodec))
+
+	cApiPreference := C.int(apiPreference)
+
+	C.VideoWriter_OpenCap(vw.p, cName, cApiPreference, cCodec, C.double(fps), C.int(width), C.int(height), C.bool(isColor))
+
+	return
+}
+
 // Close VideoWriter object.
 func (vw *VideoWriter) Close() error {
 	C.VideoWriter_Close(vw.p)
