@@ -16,6 +16,8 @@ TMP_DIR?=/tmp/
 # Build shared or static library
 BUILD_SHARED_LIBS?=ON
 
+CUDA_ARCH_BIN?=8.7
+
 # Package list for each well-known Linux distribution
 RPMS=cmake curl wget git gtk2-devel libpng-devel libjpeg-devel libtiff-devel tbb tbb-devel libdc1394-devel unzip gcc-c++
 DEBS=unzip wget build-essential cmake curl git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
@@ -139,7 +141,7 @@ build_jetson:
 		-D BUILD_DOCS=OFF -D BUILD_EXAMPLES=OFF -D BUILD_TESTS=OFF -D BUILD_PERF_TESTS=OFF -D BUILD_opencv_java=OFF -D BUILD_opencv_python=NO -D BUILD_opencv_python2=NO -D BUILD_opencv_python3=NO \
 		-D WITH_OPENCL=OFF \
 		-D WITH_CUDA=ON \
-		-D CUDA_ARCH_BIN=5.3 \
+		-D CUDA_ARCH_BIN=${CUDA_ARCH_BIN} \
 		-D CUDA_ARCH_PTX="" \
 		-D WITH_CUDNN=ON \
 		-D WITH_CUBLAS=ON \
@@ -241,7 +243,7 @@ install_raspi: deps download build_raspi sudo_install clean verify
 install_raspi_zero: deps download build_raspi_zero sudo_install clean verify
 
 # Do everything on Jetson.
-install_jetson: deps download build_jetson sudo_install clean verify
+install_jetson: deps download build_jetson sudo_install clean
 
 # Do everything with cuda.
 install_cuda: deps download sudo_pre_install_clean build_cuda sudo_install clean verify verify_cuda
