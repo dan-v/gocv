@@ -151,7 +151,7 @@ build_jetson:
 		-D ENABLE_NEON=ON \
 		-D WITH_QT=OFF \
 		-D WITH_OPENMP=ON \
-		-D WITH_OPENGL=ON \
+		-D WITH_OPENGL=OFF \
 		-D BUILD_TIFF=ON \
 		-D WITH_FFMPEG=ON \
 		-D WITH_GSTREAMER=ON \
@@ -243,7 +243,7 @@ install_raspi: deps download build_raspi sudo_install clean verify
 install_raspi_zero: deps download build_raspi_zero sudo_install clean verify
 
 # Do everything on Jetson.
-install_jetson: deps download build_jetson sudo_install clean
+install_jetson: deps download build_jetson sudo_install
 
 # Do everything with cuda.
 install_cuda: deps download sudo_pre_install_clean build_cuda sudo_install clean verify verify_cuda
